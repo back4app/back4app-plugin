@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "back4app-web-deployment": {
+      "type": "streamable-http",
+      "url": "https://mcp.containers-homolog.back4app.com/mcp"
+    }
+  }
+}

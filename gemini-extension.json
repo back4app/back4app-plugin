@@ -1,0 +1,11 @@
+{
+  "name": "back4app",
+  "version": "0.1.0",
+  "description": "Deploy apps, APIs and servers to Back4app Web Deployment, with or without a Back4app account.",
+  "skills": ["skills/back4app-web-deployment"],
+  "mcpServers": {
+    "back4app-web-deployment": {
+      "httpUrl": "https://mcp.containers-homolog.back4app.com/mcp"
+    }
+  }
+}

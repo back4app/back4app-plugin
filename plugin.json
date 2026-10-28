@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "back4app",
+  "version": "0.1.0",
+  "description": "Deploy apps, APIs and servers to Back4app Web Deployment from your AI agent, with or without a Back4app account.",
+  "author": {
+    "name": "Back4app",
+    "url": "https://www.back4app.com"
+  },
+  "homepage": "https://www.back4app.com",
+  "repository": "https://github.com/back4app/back4app-plugin",
+  "license": "MIT",
+  "keywords": ["back4app", "deploy", "hosting", "containers", "docker", "server", "api", "mcp"]
+}
