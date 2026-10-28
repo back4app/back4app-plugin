@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "back4app-web-deployment": {
+    "back4app": {
       "type": "http",
       "url": "https://mcp.containers-homolog.back4app.com/mcp"
     }
