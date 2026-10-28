@@ -27,5 +27,6 @@
   "license": "MIT",
   "skills": [
     "./skills"
-  ]
+  ],
+  "logo": "assets/back4app.svg"
 }
