@@ -17,7 +17,7 @@ More Back4app products join the same MCP server and this plugin.
 /plugin install back4app@back4app
 ```
 
-**Claude Code, Cursor, Codex, GitHub Copilot CLI, VS Code and others, in one command**
+**Claude Code, Cursor, Codex, GitHub Copilot CLI, VS Code, Grok Build and Kimi Code, in one command**
 
 ```bash
 npx plugins add back4app/back4app-plugin
@@ -27,6 +27,12 @@ npx plugins add back4app/back4app-plugin
 
 ```bash
 gemini extensions install https://github.com/back4app/back4app-plugin
+```
+
+**Antigravity**
+
+```bash
+agy plugin install https://github.com/back4app/back4app-plugin
 ```
 
 **Only the skills, in any agent that reads skills**
