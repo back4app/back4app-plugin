@@ -1,0 +1,20 @@
+{
+  "name": "back4app",
+  "version": "0.1.0",
+  "description": "Back4app for AI agents: the Back4app MCP server and skills in one plugin. Starts with Web Deployment: deploy apps, APIs and servers, with or without a Back4app account.",
+  "author": {
+    "name": "Back4app",
+    "url": "https://www.back4app.com"
+  },
+  "repository": "https://github.com/back4app/back4app-plugin",
+  "license": "MIT",
+  "keywords": [
+    "back4app",
+    "deploy",
+    "hosting",
+    "containers",
+    "docker",
+    "server",
+    "api"
+  ]
+}
