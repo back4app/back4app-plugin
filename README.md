@@ -1,3 +1,5 @@
+<img src="assets/back4app.png" alt="Back4app" width="96">
+
 # Back4app plugin
 
 Back4app for AI agents. One plugin gives your agent Back4app's products: the Back4app MCP server, and a skill per product that tells the agent when to use it and how.
@@ -52,6 +54,10 @@ npx -y add-mcp https://mcp.containers-homolog.back4app.com/mcp -n back4app -g
 ## Then
 
 Ask your agent, for example: "Deploy this folder to Back4app."
+
+## Privacy
+
+See Back4app's [privacy policy](https://www.back4app.com/privacy) and [terms](https://www.back4app.com/terms).
 
 ## License
 

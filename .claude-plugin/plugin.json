@@ -17,5 +17,7 @@
     "docker",
     "server",
     "api"
-  ]
+  ],
+  "icon": "assets/back4app.png",
+  "privacyPolicyUrl": "https://www.back4app.com/privacy"
 }

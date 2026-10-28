@@ -18,5 +18,6 @@
     "api",
     "mcp"
   ],
-  "skills": "skills"
+  "skills": "skills",
+  "logo": "assets/back4app.png"
 }
