@@ -46,7 +46,7 @@ npx skills add back4app/back4app-plugin
 **Only the MCP server, in every agent on this machine**
 
 ```bash
-npx -y add-mcp https://mcp.containers-homolog.back4app.com/mcp -n back4app -g
+npx -y add-mcp https://mcp.back4app.com/mcp -n back4app -g
 ```
 
 **Claude.ai and ChatGPT**: add the Back4app connector from the app's directory, or as a custom connector with the address above.
