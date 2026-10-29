@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "back4app": {
-      "serverUrl": "https://mcp.containers-homolog.back4app.com/mcp"
+      "serverUrl": "https://mcp.back4app.com/mcp"
     }
   }
 }

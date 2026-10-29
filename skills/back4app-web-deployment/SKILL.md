@@ -27,7 +27,7 @@ Pick the first path that fits where you run.
    ```
 
    It prints one line of JSON with the app's `url`, the `claimUrl` and when the account ends. Run it again from the same folder to deploy new code to the same app.
-3. **Neither.** Tell the person to connect the MCP server at `https://mcp.containers-homolog.back4app.com/mcp`, then deploy.
+3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
 
 ## Before deploying
 

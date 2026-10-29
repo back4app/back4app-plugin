@@ -24,7 +24,7 @@
   "mcpServers": {
     "back4app": {
       "transport": "http",
-      "url": "https://mcp.containers-homolog.back4app.com/mcp"
+      "url": "https://mcp.back4app.com/mcp"
     }
   },
   "interface": {
