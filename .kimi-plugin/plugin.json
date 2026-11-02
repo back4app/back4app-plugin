@@ -1,7 +1,7 @@
 {
   "name": "back4app",
-  "version": "0.1.0",
-  "description": "Back4app for AI agents: the Back4app MCP server and skills in one plugin. Starts with Web Deployment: deploy apps, APIs and servers, with or without a Back4app account.",
+  "version": "0.1.1",
+  "description": "Back4app for AI agents: the Back4app MCP server and skills in one plugin. Starts with Web Deployment: deploy anything that runs in a container, like web apps, websites, APIs and backends. No account needed to start.",
   "keywords": [
     "back4app",
     "deploy",
@@ -29,7 +29,7 @@
   },
   "interface": {
     "displayName": "Back4app",
-    "shortDescription": "Deploy apps, APIs and servers to Back4app, with or without an account.",
+    "shortDescription": "Deploy anything that runs in a container to Back4app. No account needed to start.",
     "developerName": "Back4app",
     "websiteURL": "https://www.back4app.com"
   }
