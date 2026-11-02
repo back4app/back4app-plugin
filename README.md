@@ -57,6 +57,13 @@ Ask your agent, for example: "Deploy this folder to Back4app."
 
 ## Privacy
 
+The plugin talks only to Back4app:
+
+- **MCP server** (`https://mcp.back4app.com/mcp`): the code and settings your agent deploys, and requests for logs.
+- **Back4app CLI** (`npx @back4app/cli`), used by the skill only when the MCP server isn't connected: it sends the folder to deploy to Back4app (`*.back4app.com`). It leaves out `.git`, `node_modules`, `.venv` and `.env` files.
+
+Your code, environment variables and logs stay on Back4app while the application exists. A temporary account and its application are deleted 24 hours after creation unless you claim them.
+
 See Back4app's [privacy policy](https://www.back4app.com/privacy.pdf) and [terms](https://www.back4app.com/terms-of-service.pdf).
 
 ## License
