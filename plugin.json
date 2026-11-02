@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "back4app",
-  "version": "0.1.0",
-  "description": "Back4app for AI agents: the Back4app MCP server and skills in one plugin. Starts with Web Deployment: deploy apps, APIs and servers, with or without a Back4app account.",
+  "version": "0.1.1",
+  "description": "Back4app for AI agents: the Back4app MCP server and skills in one plugin. Starts with Web Deployment: deploy anything that runs in a container, like web apps, websites, APIs and backends. No account needed to start.",
   "author": {
     "name": "Back4app",
     "url": "https://www.back4app.com"
