@@ -6,7 +6,7 @@ Back4app for AI agents. One plugin gives your agent Back4app's products: the Bac
 
 | Product | What your agent can do | MCP server | Skill |
 |---|---|---|---|
-| **Web Deployment** | Deploy apps, APIs and servers from a folder of code and get a public HTTPS address. No Back4app account needed to start: the agent deploys on a temporary account and gives you a link to keep the app. | `back4app` | `back4app-web-deployment` |
+| **Web Deployment** | Deploy anything that runs in a container, from web apps and websites to APIs and backends, and get a live HTTPS address. Follow builds, read build and runtime logs, deploy new versions, set environment variables, and roll back. Start without an account and keep your deployment with a claim link, or sign in to use your Back4app account. | `back4app` | `back4app-web-deployment` |
 
 More Back4app products join the same MCP server and this plugin.
 
