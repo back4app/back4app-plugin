@@ -57,7 +57,7 @@ Ask your agent, for example: "Deploy this folder to Back4app."
 
 ## Privacy
 
-See Back4app's [privacy policy](https://www.back4app.com/privacy) and [terms](https://www.back4app.com/terms).
+See Back4app's [privacy policy](https://www.back4app.com/privacy.pdf) and [terms](https://www.back4app.com/terms-of-service.pdf).
 
 ## License
 
