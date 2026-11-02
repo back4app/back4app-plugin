@@ -1,8 +1,8 @@
 {
   "name": "back4app",
   "displayName": "Back4app",
-  "version": "0.1.1",
-  "description": "Back4app for AI agents: the Back4app MCP server and skills in one plugin. Starts with Web Deployment: deploy anything that runs in a container, like web apps, websites, APIs and backends. No account needed to start.",
+  "version": "0.1.2",
+  "description": "Deploy anything that runs in a container, from web apps and websites to APIs and backends, and get a live HTTPS address. No account needed to start.",
   "suggestedPrompts": [
     "Deploy this folder to Back4app",
     "Put my API online without creating an account",
