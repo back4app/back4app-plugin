@@ -4,6 +4,7 @@
   "description": "Deploy anything that runs in a container, from web apps and websites to APIs and backends, and get a live HTTPS address. No account needed to start.",
   "author": {
     "name": "Back4app",
+    "email": "community@back4app.com",
     "url": "https://www.back4app.com"
   },
   "homepage": "https://www.back4app.com",
@@ -20,7 +21,5 @@
   ],
   "icon": "assets/back4app.png",
   "privacyPolicyUrl": "https://www.back4app.com/privacy.pdf",
-  "termsOfServiceUrl": "https://www.back4app.com/terms-of-service.pdf",
-  "supportUrl": "https://www.back4app.com/support",
-  "documentationUrl": "https://www.back4app.com/docs-containers"
+  "documentationUrl": "https://github.com/back4app/back4app-plugin"
 }
