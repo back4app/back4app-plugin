@@ -1,0 +1,1 @@
+{"signedIn": false, "nextAction": "Call create_temporary_account to go on without an account: it lasts 24 hours, holds one app, and the person keeps the app by opening a claim link. Or call sign_in to connect the Back4App account of the person."}
