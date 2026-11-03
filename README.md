@@ -16,6 +16,26 @@ Deploy anything that runs in a container, from web apps and websites to APIs and
 - Changes to a live application, like new environment variables or a rollback, are shown to you as a summary first and run only after you agree.
 - The application must answer HTTP on the port in the `PORT` environment variable.
 
+## Supported tools
+
+Claude Code, Claude (claude.ai, desktop, Cowork), Cursor, Codex, GitHub Copilot CLI, VS Code, Gemini CLI, Grok Build, Kimi Code and Antigravity.
+
+## Install
+
+```bash
+npx plugins add back4app/back4app-plugin
+```
+
+That's it: the plugin installs the Back4app MCP server and the Web Deployment skill. For Gemini CLI, run `gemini extensions install https://github.com/back4app/back4app-plugin`.
+
+## Back4app MCP server
+
+The plugin connects to a remote MCP server. To use it on its own, in any MCP client, add a remote server:
+
+- URL: `https://mcp.back4app.com/mcp`
+- Transport: Streamable HTTP
+- Authentication: none to start. The server makes a temporary account when you ask to deploy. To use your Back4app account, ask the agent to sign in (OAuth 2.1).
+
 ## What's inside
 
 | Product | MCP server | Skill |
@@ -34,49 +54,6 @@ The plugin talks only to Back4app:
 Your code, environment variables and logs stay on Back4app while the application exists. A temporary account and its application are deleted 24 hours after creation unless you claim them.
 
 See Back4app's [privacy policy](https://www.back4app.com/privacy.pdf) and [terms](https://www.back4app.com/terms-of-service.pdf).
-
-## Install
-
-**Claude (claude.ai, desktop, Cowork)**: add the Back4app plugin from the directory in Customize > Plugins, then connect it from the plugin's Connectors tab.
-
-**Claude Code**
-
-```text
-/plugin marketplace add back4app/back4app-plugin
-/plugin install back4app@back4app
-```
-
-**Claude Code, Cursor, Codex, GitHub Copilot CLI, VS Code, Grok Build and Kimi Code, in one command**
-
-```bash
-npx plugins add back4app/back4app-plugin
-```
-
-**Gemini CLI**
-
-```bash
-gemini extensions install https://github.com/back4app/back4app-plugin
-```
-
-**Antigravity**
-
-```bash
-agy plugin install https://github.com/back4app/back4app-plugin
-```
-
-**Only the skills, in any agent that reads skills**
-
-```bash
-npx skills add back4app/back4app-plugin
-```
-
-**Only the MCP server, in every agent on this machine**
-
-```bash
-npx -y add-mcp https://mcp.back4app.com/mcp -n back4app -g
-```
-
-**ChatGPT**: add the Back4app connector as a custom connector with the address above.
 
 ## License
 
