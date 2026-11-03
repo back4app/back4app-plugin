@@ -3,13 +3,14 @@
     {
       "name": "whoami",
       "title": "Who is connected",
-      "description": "The account this connection works with: a Back4App account, a temporary account (with its deadline and claim link), or none yet. Call it first, and whenever in doubt about the account.",
+      "description": "The account this connection works with: a Back4App account, a temporary account (with its deadline and claim link), or none yet. Tells which account the other tools act on.",
       "inputSchema": {
         "type": "object",
         "properties": {}
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {
@@ -37,7 +38,7 @@
     {
       "name": "create_temporary_account",
       "title": "Go on without an account",
-      "description": "Starts a temporary Back4App account for this connection, only when whoami says no account is connected: never on a connection that has one, even when the person asks. It lasts 24 hours and holds one app on the Free plan, deployed from a folder. The person keeps the app by opening the claim link and signing in; otherwise everything is deleted at the deadline. Always show the claim link to the person.",
+      "description": "Starts a temporary Back4App account for a connection with no account; refused on one that has an account. It lasts 24 hours and holds one app on the Free plan, deployed from a folder. The person keeps the app by opening the claim link and signing in; otherwise everything is deleted at the deadline. The answer has the claim link, which the person opens to keep the app.",
       "inputSchema": {
         "type": "object",
         "properties": {}
@@ -73,7 +74,7 @@
     {
       "name": "sign_in",
       "title": "Sign in to Back4App",
-      "description": "Connects the person's Back4App account: the client opens the browser for them to sign in (or create an account) and approve. Call it when the person wants their own account, or when a temporary account is over. The call itself is cut short by the sign-in; go on once the client says it is connected.",
+      "description": "Connects the person's Back4App account: the client opens the browser for them to sign in (or create an account) and approve. For when the person wants their own account, or when a temporary account is over. The call itself is cut short by the sign-in; the tools work with the account once the client says it is connected.",
       "inputSchema": {
         "type": "object",
         "properties": {}
@@ -101,9 +102,9 @@
       ]
     },
     {
-      "name": "list_apps",
+      "name": "list_web_apps",
       "title": "List apps",
-      "description": "The account's Containers apps, its own and the ones it collaborates on, newest first: state, URL, plan, where the code comes from and the last deployment. On the Free plan, urlExpiresAt is when the URL stops answering (a deploy after that brings the app back at a new URL); offlineReason says why an app is OFFLINE. The first step when working with an app that exists.",
+      "description": "The account's web apps, its own and the ones it collaborates on, newest first: state, URL, plan, where the code comes from and the last deployment. On the Free plan, urlExpiresAt is when the URL stops answering (a deploy after that brings the app back at a new URL); offlineReason says why an app is OFFLINE. The first step when working with an app that exists.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -122,6 +123,7 @@
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {
@@ -147,7 +149,7 @@
       ]
     },
     {
-      "name": "get_app",
+      "name": "get_web_app",
       "title": "Get an app",
       "description": "One app in full: where its code comes from, root folder, builder, port, start command, health check, plan, URL, the names of its environment variables and its last deployment. On the Free plan, urlExpiresAt is when the URL stops answering (a deploy after that brings the app back at a new URL); offlineReason says why an app is OFFLINE (FREE_ADDRESS_EXPIRED: that time passed, not a failed deploy).",
       "inputSchema": {
@@ -156,7 +158,7 @@
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           }
         },
         "required": [
@@ -167,6 +169,7 @@
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {
@@ -192,9 +195,9 @@
       ]
     },
     {
-      "name": "create_app",
+      "name": "create_web_app",
       "title": "Create an app and deploy it",
-      "description": "Creates an app on the Free plan from a folder of code and starts its first deployment. The app must listen on the port given in the PORT environment variable. Send the code one way: uploadId and manifestSha256 (from the command create_upload gives, when there is a terminal) or files (the code in this call, when there is none). Never call it again for an app that exists: use deploy or update_app.",
+      "description": "Creates an app on the Free plan from a folder of code and starts its first deployment. The app must listen on the port given in the PORT environment variable. Send the code one way: uploadId and manifestSha256 (from the command create_upload gives, when there is a terminal) or files (the code in this call, when there is none). For an app that exists, deploy_web_app and update_web_app send new code.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -327,16 +330,16 @@
       ]
     },
     {
-      "name": "update_app",
+      "name": "update_web_app",
       "title": "Change an app and deploy it again",
-      "description": "Changes an app's settings or environment variables and always deploys it again; only what is sent changes. New code can go along with the change. To deploy with nothing else changed, use deploy. The first call changes nothing: it answers a summary of the change (the variables by name) and a confirmationId. Show the summary to the person and, if they agree, call update_app again with the same arguments and the confirmationId.",
+      "description": "Changes an app's settings or environment variables and always deploys it again; only what is sent changes. New code can go along with the change. To deploy with nothing else changed, use deploy_web_app. The first call changes nothing: it answers a summary of the change (the variables by name) and a confirmationId. Show the summary to the person and, if they agree, call update_web_app again with the same arguments and the confirmationId.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           },
           "rootDir": {
             "type": "string",
@@ -477,7 +480,7 @@
     {
       "name": "create_upload",
       "title": "Get the command that sends a folder",
-      "description": "For a client with a terminal: gives the command that packs the project's folder and sends it to Back4App. Run the command in the folder; it needs no login and prints the uploadId and manifestSha256 that create_app, deploy and update_app take. Pass appId when the code is for an app that exists.",
+      "description": "For a client with a terminal: gives the command that packs the project's folder and sends it to Back4App. Run the command in the folder; it needs no login and prints the uploadId and manifestSha256 that create_web_app, deploy_web_app and update_web_app take. Pass appId when the code is for an app that exists.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -518,7 +521,7 @@
       ]
     },
     {
-      "name": "deploy",
+      "name": "deploy_web_app",
       "title": "Deploy an app",
       "description": "Publishes new code to an app, or deploys its latest code again when no code is sent. Send new code as uploadId and manifestSha256 (from create_upload, called with this appId) or as files.",
       "inputSchema": {
@@ -527,7 +530,7 @@
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           },
           "files": {
             "type": "array",
@@ -580,7 +583,7 @@
       },
       "annotations": {
         "readOnlyHint": false,
-        "destructiveHint": false,
+        "destructiveHint": true,
         "openWorldHint": false
       },
       "execution": {
@@ -608,14 +611,14 @@
     {
       "name": "get_deployment",
       "title": "Follow a deployment",
-      "description": "One deployment: status (QUEUED, BUILDING, DEPLOYING, READY, FAILED, CANCELED or REMOVED), phase, dates, source, and the URL once READY. When FAILED it brings the error and the end of the build log. When the analysis of the code found settings the app does not have (environment variables, start command, port), it brings them as suggestions. When the app was not listening on the port its settings named, portDetected says where it was found: the port setting of the app was changed to that one, so tell the person. Call it every few seconds after create_app, deploy, update_app or a confirmed rollback, until READY or FAILED.",
+      "description": "One deployment: status (QUEUED, BUILDING, DEPLOYING, READY, FAILED, CANCELED or REMOVED), phase, dates, source, and the URL once READY. When FAILED it brings the error and the end of the build log. When the analysis of the code found settings the app does not have (environment variables, start command, port), it brings them as suggestions. When the app was not listening on the port its settings named, portDetected says where it was found: the port setting of the app was changed to that one, so tell the person. Follows a deployment started by create_web_app, deploy_web_app, update_web_app or a confirmed rollback, until it is READY or FAILED.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "deploymentId": {
             "type": "string",
             "minLength": 1,
-            "description": "From create_app, deploy, update_app, confirm_action or list_deployments."
+            "description": "From create_web_app, deploy_web_app, update_web_app, confirm_action or list_deployments."
           }
         },
         "required": [
@@ -626,6 +629,7 @@
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {
@@ -660,7 +664,7 @@
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           },
           "limit": {
             "type": "integer",
@@ -680,6 +684,7 @@
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {
@@ -714,7 +719,7 @@
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           }
         },
         "required": [
@@ -807,7 +812,7 @@
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           },
           "deploymentId": {
             "type": "string",
@@ -829,6 +834,7 @@
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {
@@ -863,7 +869,7 @@
           "appId": {
             "type": "string",
             "minLength": 1,
-            "description": "The id of the app, from list_apps."
+            "description": "The id of the app, from list_web_apps."
           },
           "tail": {
             "type": "integer",
@@ -880,6 +886,7 @@
       },
       "annotations": {
         "readOnlyHint": true,
+        "destructiveHint": false,
         "openWorldHint": false
       },
       "execution": {

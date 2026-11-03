@@ -1,1 +1,1 @@
-{"account": {"kind": "temporary", "expiresAt": "2026-11-04T15:00:00Z", "claimUrl": "https://containers.back4app.com/claim/tmp_7f3a9c"}, "nextAction": "Deploy with create_app. Give the person the claim link exactly as it is and say when the account ends."}
+{"account": {"kind": "temporary", "expiresAt": "2026-11-04T15:00:00Z", "claimUrl": "https://containers.back4app.com/claim/tmp_7f3a9c"}, "nextAction": "Deploy with create_web_app. Give the person the claim link exactly as it is and say when the account ends."}
