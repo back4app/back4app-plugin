@@ -25,7 +25,9 @@ Pick the first path that fits where you run.
    ```
 
    It prints one line of JSON with the application's `url`, the `claimUrl` and when the account ends. Run it again from the same folder to deploy new code to the same application.
-3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
+
+   A sandbox with no network access, like the code tool in claude.ai chat, can't reach Back4app: use the MCP server there.
+3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp` (in claude.ai, from this plugin's Connectors tab), then deploy.
 
 ## Before deploying
 
