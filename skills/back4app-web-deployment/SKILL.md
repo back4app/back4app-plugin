@@ -17,7 +17,7 @@ Back4app Web Deployment builds a folder of code, runs it in a container and give
 
 Pick the first path that fits where you run.
 
-1. **The Back4app Web Deployment MCP server is connected.** Use its tools and follow its instructions and each result's `nextAction`. With no account on the connection, it makes a temporary account: do not ask the person to sign up first.
+1. **The Back4app Web Deployment MCP server is connected.** Use its tools. With no account on the connection, it can make a temporary account: the person keeps the application with the claim link, or signs in to their Back4app account.
 2. **You have a terminal with network access, and no MCP server.** From the folder:
 
    ```bash
@@ -26,8 +26,8 @@ Pick the first path that fits where you run.
 
    It prints one line of JSON with the application's `url`, the `claimUrl` and when the account ends. Run it again from the same folder to deploy new code to the same application.
 
-   A sandbox with no network access, like the code tool in claude.ai chat, can't reach Back4app: use the MCP server there.
-3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp` (in claude.ai, from this plugin's Connectors tab), then deploy.
+   A sandbox with no network access can't reach Back4app: use the MCP server there.
+3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
 
 ## Before deploying
 
