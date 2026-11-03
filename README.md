@@ -53,6 +53,8 @@ The plugin talks only to Back4app:
 
 Your code, environment variables and logs stay on Back4app while the application exists. A temporary account and its application are deleted 24 hours after creation unless you claim them.
 
+Support: [community@back4app.com](mailto:community@back4app.com)
+
 See Back4app's [privacy policy](https://www.back4app.com/privacy.pdf) and [terms](https://www.back4app.com/terms-of-service.pdf).
 
 ## License
