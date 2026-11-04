@@ -46,10 +46,7 @@ More Back4app products join the same MCP server and this plugin.
 
 ## Privacy
 
-The plugin talks only to Back4app:
-
-- **MCP server** (`https://mcp.back4app.com/mcp`): the code and settings your agent deploys, and requests for logs.
-- **Back4app CLI** (`npx @back4app/cli`), used by the skill only when the MCP server isn't connected: it sends the folder to deploy to Back4app (`*.back4app.com`). It leaves out `.git`, `node_modules`, `.venv` and `.env` files.
+The plugin talks only to Back4app, through the MCP server (`https://mcp.back4app.com/mcp`): the code and settings your agent deploys, and requests for logs.
 
 Your code, environment variables and logs stay on Back4app while the application exists. A temporary account and its application are deleted 24 hours after creation unless you claim them.
 
