@@ -1,6 +1,6 @@
 {
   "name": "back4app",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Deploy anything that runs in a container, from web apps and websites to APIs and backends, and get a live HTTPS address. No account needed to start.",
   "author": {
     "name": "Back4app"
@@ -19,5 +19,5 @@
     "mcp"
   ],
   "skills": "skills",
-  "logo": "assets/back4app.png"
+  "logo": "assets/icon.png"
 }
