@@ -15,7 +15,7 @@ Back4app Web Deployment builds a folder of code, runs it in a container and give
 
 ## How to deploy
 
-- **The Back4app Web Deployment MCP server is connected.** Use its tools. With no account on the connection, it can make a temporary account: the person keeps the application with the claim link, or signs in to their Back4app account.
+- **The Back4app Web Deployment MCP server is connected.** Use its tools. The connection has the account the person chose when connecting: their Back4app account, or a temporary one. If the connection is refused, ask the person to connect the MCP server again.
 - **It is not connected.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
 
 ## Before deploying
