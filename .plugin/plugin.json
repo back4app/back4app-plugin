@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "back4app",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Deploy anything that runs in a container, from web apps and websites to APIs and backends, and get a live HTTPS address. No account needed to start.",
   "author": {
     "name": "Back4app",
