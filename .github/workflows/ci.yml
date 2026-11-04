@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JSON files parse, and every manifest has the same version
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, subprocess, sys
+          files = subprocess.run(["git", "ls-files", "*.json"], capture_output=True, text=True, check=True).stdout.split()
+          for f in files:
+              json.loads(pathlib.Path(f).read_text())
+          manifests = [
+              ".claude-plugin/plugin.json",
+              ".codex-plugin/plugin.json",
+              ".cursor-plugin/plugin.json",
+              ".plugin/plugin.json",
+              ".kimi-plugin/plugin.json",
+              ".antigravity-plugin/plugin.json",
+              "gemini-extension.json",
+          ]
+          versions = {f: json.loads(pathlib.Path(f).read_text())["version"] for f in manifests}
+          if len(set(versions.values())) != 1:
+              sys.exit(f"Versions differ: {versions}")
+          print(f"{len(files)} JSON files parse; version {versions[manifests[0]]} in {len(manifests)} manifests")
+          PY
+      - name: Every file a manifest points to exists
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          missing = []
+          for f, keys in {
+              ".claude-plugin/plugin.json": ["icon"],
+              ".cursor-plugin/plugin.json": ["logo", "skills"],
+              ".antigravity-plugin/plugin.json": ["logo"],
+              ".codex-plugin/plugin.json": ["skills", "mcpServers", "interface.logo", "interface.composerIcon"],
+          }.items():
+              data = json.loads(pathlib.Path(f).read_text())
+              for key in keys:
+                  value = data
+                  for part in key.split("."):
+                      value = value[part]
+                  if not pathlib.Path(value).exists():
+                      missing.append(f"{f}: {key} -> {value}")
+          if missing:
+              sys.exit("Missing: " + "; ".join(missing))
+          print("All paths exist")
+          PY

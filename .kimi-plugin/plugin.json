@@ -1,6 +1,6 @@
 {
   "name": "back4app",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Deploy anything that runs in a container, from web apps and websites to APIs and backends, and get a live HTTPS address. No account needed to start.",
   "keywords": [
     "back4app",
@@ -12,7 +12,7 @@
     "api",
     "mcp"
   ],
-  "homepage": "https://github.com/back4app/back4app-plugin",
+  "homepage": "https://www.back4app.com",
   "license": "MIT",
   "author": {
     "name": "Back4app",
