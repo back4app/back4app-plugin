@@ -610,8 +610,8 @@
     },
     {
       "name": "get_deployment",
-      "title": "Follow a deployment",
-      "description": "One deployment: status (QUEUED, BUILDING, DEPLOYING, READY, FAILED, CANCELED or REMOVED), phase, dates, source, and the URL once READY. When FAILED it brings the error and the end of the build log. When the analysis of the code found settings the app does not have (environment variables, start command, port), it brings them as suggestions. When the app was not listening on the port its settings named, portDetected says where it was found: the port setting of the app was changed to that one, so tell the person. Follows a deployment started by create_web_app, deploy_web_app, update_web_app or a confirmed rollback, until it is READY or FAILED.",
+      "title": "Follow a web app deployment",
+      "description": "One deployment of a web app: status (QUEUED, BUILDING, DEPLOYING, READY, FAILED, CANCELED or REMOVED), phase, dates, source, and the URL once READY. When FAILED it brings the error and the end of the build log. When the analysis of the code found settings the app does not have (environment variables, start command, port), it brings them as suggestions. When the app was not listening on the port its settings named, portDetected says where it was found: the port setting of the app was changed to that one, so tell the person. Follows a deployment started by create_web_app, deploy_web_app, update_web_app or a confirmed rollback, until it is READY or FAILED.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -656,8 +656,8 @@
     },
     {
       "name": "list_deployments",
-      "title": "List deployments",
-      "description": "An app's deployments, newest first. Use it to find an older deployment, or the one a push to the repository started.",
+      "title": "List deployments of a web app",
+      "description": "A web app's deployments, newest first. Use it to find an older deployment, or the one a push to the repository started.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -804,8 +804,8 @@
     },
     {
       "name": "get_build_logs",
-      "title": "Read build logs",
-      "description": "The log of a deployment, oldest line first: fetching the code, the build, pushing the image, starting the container and the health check. The app's latest deployment by default. Read it when a deployment is FAILED.",
+      "title": "Read build logs of a web app",
+      "description": "The build log of a web app's deployment, oldest line first: fetching the code, the build, pushing the image, starting the container and the health check. The app's latest deployment by default. Read it when a deployment is FAILED.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -861,8 +861,8 @@
     },
     {
       "name": "get_runtime_logs",
-      "title": "Read runtime logs",
-      "description": "What the app's running container wrote, oldest line first. The platform keeps the last 100 lines. Read it when a deployment is READY but the app misbehaves.",
+      "title": "Read runtime logs of a web app",
+      "description": "What a web app's running container wrote, oldest line first. The platform keeps the last 100 lines. Read it when a deployment is READY but the app misbehaves.",
       "inputSchema": {
         "type": "object",
         "properties": {
