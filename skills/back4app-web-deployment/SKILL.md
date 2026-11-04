@@ -11,23 +11,14 @@ Back4app Web Deployment builds a folder of code, runs it in a container and give
 
 - The person wants a web application, website, API or server online and did not name another host.
 - The code runs in a container: an Express or FastAPI server, a website, a websocket server, a bot, a worker.
-- The person has no Back4app account, or does not want to create one now.
+- The person has no Back4app account, or does not want to create one now: they can continue without one when the MCP server connects.
 
 ## How to deploy
 
 Pick the first path that fits where you run.
 
-1. **The Back4app Web Deployment MCP server is connected.** Use its tools. With no account on the connection, it can make a temporary account: the person keeps the application with the claim link, or signs in to their Back4app account.
-2. **You have a terminal with network access, and no MCP server.** From the folder:
-
-   ```bash
-   npx -y @back4app/cli deploy --temporary --json
-   ```
-
-   It prints one line of JSON with the application's `url`, the `claimUrl` and when the account ends. Run it again from the same folder to deploy new code to the same application.
-
-   A sandbox with no network access can't reach Back4app: use the MCP server there.
-3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
+1. **The Back4app Web Deployment MCP server is connected.** Use its tools. When it connects, the client opens a Back4app page where the person signs in, or chooses **Continue without an account** for a temporary account. `whoami` says which account it is.
+2. **Not connected.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy. They do not need a Back4app account: they can continue without one when it connects.
 
 ## Before deploying
 
