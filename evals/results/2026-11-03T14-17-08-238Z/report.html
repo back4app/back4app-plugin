@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eval report — back4app v0.1.6</title>
+</head>
+<body>
+<style>
+:root{--plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--ink-3:#6b6a64;--hairline:rgba(11,11,11,.10);--grid:#e1e0d9;--inset:rgba(11,11,11,.04);--accent:#2a78d6;--base-fill:#6b6a64;--delta-good:#006300;--good:#067d06;--warning:#8a6100;--critical:#d03b3b;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{--plane:#0d0d0d;--surface:#1a1a19;--ink:#ffffff;--ink-2:#c3c2b7;--ink-3:#898781;--hairline:rgba(255,255,255,.10);--grid:#2c2c2a;--inset:rgba(255,255,255,.05);--accent:#3987e5;--base-fill:#898781;--delta-good:#0ca30c;--good:#0ca30c;--warning:#fab219;--critical:#e06c6c;color-scheme:dark}}
+:root[data-theme="dark"]{--plane:#0d0d0d;--surface:#1a1a19;--ink:#ffffff;--ink-2:#c3c2b7;--ink-3:#898781;--hairline:rgba(255,255,255,.10);--grid:#2c2c2a;--inset:rgba(255,255,255,.05);--accent:#3987e5;--base-fill:#898781;--delta-good:#0ca30c;--good:#0ca30c;--warning:#fab219;--critical:#e06c6c;color-scheme:dark}
+:root[data-theme="light"]{--plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--ink-3:#6b6a64;--hairline:rgba(11,11,11,.10);--grid:#e1e0d9;--inset:rgba(11,11,11,.04);--accent:#2a78d6;--base-fill:#6b6a64;--delta-good:#006300;--good:#067d06;--warning:#8a6100;--critical:#d03b3b;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+  font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:40px 24px 64px;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+header h1{margin:2px 0 0;font-size:24px;font-weight:600;line-height:1.25;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:var(--ink-2);font-size:13px}
+.meta .num{font-variant-numeric:tabular-nums lining-nums}
+.banner{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;
+  border:1px solid var(--hairline);background:var(--surface);font-size:13px}
+.banner .chip-warn{color:var(--warning);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:14px 16px;
+  display:flex;flex-direction:column;gap:4px}
+.tile .label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.tile .value{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums lining-nums;line-height:1.1}
+.tile.hero .value{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:48px}
+.tile .sub{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.tile .value.delta-pos{color:var(--delta-good)}
+.tile .value.delta-neg{color:var(--critical)}
+.toolbar{display:flex;gap:8px;justify-content:flex-end}
+.toolbar button{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink-2);
+  background:var(--surface);border:1px solid var(--hairline);border-radius:6px;padding:4px 10px;cursor:pointer}
+.toolbar button:hover{color:var(--ink)}
+.toolbar button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.case{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:18px 20px;
+  display:flex;flex-direction:column;gap:10px}
+.case-regressed{border-left:3px solid var(--critical)}
+.verdict{margin:6px 0 0;font-size:15px}
+.verdict .delta{font-size:15px}
+.flag{font-size:11px;font-weight:600;color:var(--warning);white-space:nowrap}
+.star{color:var(--warning);font-size:.45em;vertical-align:super;line-height:0;cursor:help}
+.legend summary{cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
+.legend-list{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--ink-2)}
+.case-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.case-head h2{margin:0;font-size:16px;font-weight:600}
+.case-head .spacer{flex:1}
+.case-score{font-size:15px;font-weight:600}
+.mono{font:12px "SF Mono",ui-monospace,Menlo,Consolas,monospace}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.muted{color:var(--ink-3);font-size:12px}
+.meter{display:inline-block;position:relative;width:120px;height:6px;border-radius:4px;background:var(--grid);
+  vertical-align:middle}
+.meter>span{display:block;height:100%;border-radius:4px;max-width:100%}
+.meter .tick{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink-3);border-radius:1px}
+.m-accent>span{background:var(--accent)}
+.m-base>span{background:var(--base-fill)}
+.delta{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.delta-pos{color:var(--delta-good)}
+.delta-neg{color:var(--critical)}
+.delta-zero{color:var(--ink-3)}
+details.section{border-top:1px solid var(--grid);padding-top:10px}
+details.section>summary{cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--ink-2);list-style-position:outside;margin-left:2px}
+details.section>summary:hover{color:var(--ink)}
+details.section[open]>summary{margin-bottom:8px}
+.md{display:flex;flex-direction:column;gap:8px;background:var(--inset);border-radius:8px;
+  padding:12px 14px;overflow-wrap:break-word}
+.md>:first-child{margin-top:0}
+.md h1,.md h2,.md h3,.md h4,.md h5,.md h6{margin:4px 0 0;font-size:1em;font-weight:600;line-height:1.3}
+.md p,.md ul,.md ol,.md blockquote,.md table,.md pre,.md hr{margin:0}
+.md ul,.md ol{display:flex;flex-direction:column;gap:4px;padding-left:20px}
+.md blockquote{border-left:2px solid var(--hairline);padding-left:10px;color:var(--ink-2)}
+.md :not(pre)>code{background:var(--inset);padding:1px 4px;border-radius:4px;
+  font:.92em "SF Mono",ui-monospace,Menlo,Consolas,monospace}
+.md pre{background:var(--inset);border:1px solid var(--hairline);padding:10px 12px;border-radius:6px;
+  overflow-x:auto;font:12px/1.5 "SF Mono",ui-monospace,Menlo,Consolas,monospace}
+.md pre code{background:none;padding:0;font:inherit}
+.md table{width:100%;border-collapse:collapse}
+.md th,.md td{padding:5px 8px;text-align:left;vertical-align:top;border-bottom:1px solid var(--grid)}
+.md th{font-weight:600;color:var(--ink-2)}
+.md a{color:var(--accent);text-decoration:none}
+.md a:hover{text-decoration:underline}
+.grader-def{display:flex;flex-direction:column;gap:6px;padding:8px 0}
+.grader-def+.grader-def{border-top:1px solid var(--grid)}
+.grader-def-head{display:flex;align-items:baseline;gap:8px}
+.grader-name{font:13px "SF Mono",ui-monospace,Menlo,Consolas,monospace;font-weight:600}
+.badge{font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--hairline);border-radius:999px;padding:1px 8px}
+.config{display:flex;flex-direction:column;gap:2px;background:var(--inset);border-radius:8px;padding:10px 14px}
+.config code{font:12px "SF Mono",ui-monospace,Menlo,Consolas,monospace;overflow-wrap:anywhere}
+.arm{display:flex;flex-direction:column;gap:8px;padding:6px 0}
+.arm+.arm{border-top:1px dashed var(--grid);margin-top:4px;padding-top:12px}
+.arm-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.arm-label{font-size:13px;font-weight:600}
+.run{border:1px solid var(--grid);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.run-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.run-title{font-size:12px;font-weight:600;color:var(--ink-2)}
+.run-error .explanation{color:var(--ink-2)}
+.note{font-size:12px;color:var(--ink-2)}
+.graders{display:flex;flex-direction:column;gap:4px}
+details.grader{border-radius:6px}
+details.grader>summary{cursor:pointer;display:flex;align-items:baseline;gap:8px;padding:3px 4px;
+  border-radius:6px;list-style:none}
+details.grader>summary::-webkit-details-marker{display:none}
+details.grader>summary::before{content:'▸';font-size:10px;color:var(--ink-3);flex:none;
+  transition:transform .12s ease}
+details.grader[open]>summary::before{transform:rotate(90deg)}
+details.grader>summary:hover{background:var(--inset)}
+details.grader>summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.grader-body{padding:6px 8px 8px 24px;display:flex;flex-direction:column;gap:6px}
+.chip{font-size:11px;font-weight:600;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.chip-pass{color:var(--good);border:1px solid currentColor}
+.chip-fail{color:var(--critical);border:1px solid currentColor}
+.chip.chip-warn{color:var(--warning);border:1px solid currentColor}
+.explanation{margin:0;font-size:13px;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:break-word}
+.kv{display:flex;gap:8px;font-size:12px;color:var(--ink-3)}
+.votes{font-variant-numeric:tabular-nums;letter-spacing:.1em}
+pre.evidence{margin:0;background:var(--inset);border:1px solid var(--hairline);border-radius:6px;
+  padding:8px 10px;overflow-x:auto;max-height:320px;
+  font:12px/1.5 "SF Mono",ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:break-word}
+footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:8px}
+@media (prefers-reduced-motion:no-preference){
+  details.grader>summary,.toolbar button{transition:background .12s ease,color .12s ease}
+}
+@media (prefers-reduced-motion:reduce){
+  details.grader>summary::before{transition:none}
+}
+@media print{
+  :root,:root[data-theme="dark"],:root[data-theme="light"]{--plane:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--ink-3:#6b6a64;--hairline:rgba(11,11,11,.10);--grid:#e1e0d9;--inset:rgba(11,11,11,.04);--accent:#2a78d6;--base-fill:#6b6a64;--delta-good:#006300;--good:#067d06;--warning:#8a6100;--critical:#d03b3b;color-scheme:light}
+  body{background:#fff}
+  .toolbar{display:none}
+  .case,.run,.grader-def{break-inside:avoid}
+  pre.evidence{max-height:none}
+}
+</style>
+<div class="wrap">
+<header>
+<div class="eyebrow">Plugin eval report</div>
+<h1>back4app v0.1.6</h1>
+<p class="verdict">Plugin effect: <span class="delta delta-pos">↑ +55.6 pts</span> vs baseline — improved 2 · flat 1 · regressed 0 of 3 cases.</p>
+<div class="meta">
+<span class="mono">.</span>
+<span>Claude Code v2.1.316</span>
+<span class="num">2026-11-03 14:17 UTC</span>
+<span class="num">1m 51s</span>
+<span class="num">$0.53</span>
+<span class="num">6 runs</span>
+
+
+
+<span>judge default</span>
+<span class="num">threshold 100%</span>
+
+</div>
+</header>
+
+<section class="tiles">
+<div class="tile hero"><span class="label">Suite score · with plugin</span><span class="value">83.3%</span><span class="sub">mean of per-case scores</span></div>
+<div class="tile"><span class="label">Ablation Δ</span><span class="value num delta-pos">↑ +55.6</span><span class="sub">score points vs baseline, 3 of 3 cases</span></div>
+<div class="tile"><span class="label">Baseline score</span><span class="value num">27.8%</span><span class="sub">without the plugin</span></div>
+<div class="tile"><span class="label">Cases</span><span class="value num">3</span><span class="sub">2 of 3 ≥ 100% threshold</span></div>
+<div class="tile"><span class="label">Perfect runs</span><span class="value num">66.7%</span><span class="sub">runs where every grader passed</span></div>
+</section>
+<details class="section legend">
+<summary>How to read this report</summary>
+<ul class="legend-list">
+<li>A run's score is the weighted fraction of its graders that passed; a "perfect" run passed every grader.</li>
+<li>A case's score is the mean of its runs; a case passes when its score is at or above the 100% threshold (the tick on each case bar).</li>
+<li>The suite score is the mean of the per-case scores.</li>
+<li>Judge votes are independent samples of the LLM judge; the majority decides pass or fail.</li>
+<li>"With plugin" and "Baseline" runs are identical except for the plugin being loaded; Δ is the with-plugin score minus the baseline score.</li>
+
+</ul>
+</details>
+<div class="toolbar"><button type="button" data-act="expand">Expand all</button><button type="button" data-act="collapse">Collapse all</button></div>
+<article class="case" id="case-1">
+<div class="case-head">
+<h2>bot-without-port</h2>
+<span class="muted mono">evals/bot-without-port</span>
+<span class="spacer"></span>
+
+<span class="delta delta-zero">· 0.0 pts</span>
+<span class="muted">with plugin</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:50.0%"></span><i class="tick" style="left:100.0%"></i></span>
+<span class="num case-score">50%</span>
+</div>
+
+<details class="section" open>
+<summary>Results</summary>
+<section class="arm">
+<div class="arm-head">
+<span class="arm-label">With plugin</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:50.0%"></span></span>
+<span class="num">50%</span>
+<span class="muted num">0% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:50.0%"></span></span>
+<span class="num">50%</span>
+<span class="muted num">5 turns · $0.11 · 14:17:08 UTC</span>
+</div>
+<details class="mocks"><summary>Mocked: back4app — create_app=fixed, create_temporary_account=fixed, create_upload=fixed, get_deployment=fixed, whoami=fixed · 1 call</summary><div class="note">mocks: mocks/back4app/ has no &lt;tool&gt;.md responders — nothing is mocked for back4app</div></details>
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">http-server-on-port</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">{&quot;tool&quot;:&quot;mcp__plugin_back4app_back4app__whoami&quot;,&quot;input&quot;:{},&quot;output&quot;:&quot;{\&quot;signedIn\&quot;: false, \&quot;nextAction\&quot;: \&quot;Call create_temporary_account to go on without an account: it lasts 24 hours, holds one app, and the person keeps the app by opening a claim link. Or call sign_in to connect the Back4App account of the person.\&quot;}&quot;,&quot;verdict&quot;:&quot;ok&quot;}</pre>
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">token-not-in-code</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: PASS PASS PASS</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✓ ✓ ✓</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">Before I deploy, I need one thing from you, and there&apos;s one change your code needs.
+
+**1. Your bot token.** The bot reads `TELEGRAM_TOKEN` from the environment, so I&apos;ll set it as an environment variable on the app. It won&apos;t go into the code, and Back4app&apos;s tools never show it again after it&apos;s set. Paste it here (it&apos;s the token @BotFather gave you, like `123456:ABC-...`). If you&apos;d rather not share it in chat, say so. I&apos;ll deploy without it and you can add it in the Back4app dashboard after you claim the app.
+
+**2. The bot needs a small web server.** Back4app checks that every app answers HTTP on the `PORT` environment variable. If it doesn&apos;t, the deployment fails. Your bot only polls Telegram, so I&apos;ll add a few lines that answer `200` on `/`, using Node&apos;s built-in `http` module so there are no new dependencies:
+
+```js
+const http = require(&apos;http&apos;);
+const TelegramBot = require(&apos;node-telegram-bot-api&apos;);
+
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+bot.on(&apos;message&apos;, (msg) =&gt; bot.sendMessage(msg.chat.id, msg.text));
+
+http.createServer((req, res) =&gt; res.end(&apos;ok&apos;)).listen(process.env.PORT || 8080);
+```
+
+**How it will work:** you have no account, so I&apos;ll make a free temporary Back4app account. It lasts 24 hours. I&apos;ll give you a claim link, and opening it and signing in keeps the bot online. If you don&apos;t claim it, the account and app are deleted. I&apos;ll wait for your token before creating the account so none of the 24 hours goes to waiting.
+
+Also, run the bot in only one place. If it&apos;s still polling on your own machine, Telegram will return conflict errors to both copies.</pre>
+</div>
+</details></div>
+</div>
+</section><section class="arm">
+<div class="arm-head">
+<span class="arm-label">Baseline (no plugin)</span>
+<span class="meter m-base" aria-hidden="true"><span style="width:50.0%"></span></span>
+<span class="num">50%</span>
+<span class="muted num">0% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-base" aria-hidden="true"><span style="width:50.0%"></span></span>
+<span class="num">50%</span>
+<span class="muted num">2 turns · $0.08 · 14:17:31 UTC</span>
+</div>
+
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">http-server-on-port</span>  </summary>
+<div class="grader-body">
+<p class="explanation">no mock stand-ins were active in this run (--mocks off, or no mocks/ directory applies to this case) — a mock_calls grader has nothing to check</p>
+
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">token-not-in-code</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: PASS PASS PASS</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✓ ✓ ✓</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">I can&apos;t do this part for you: making a Back4app account means signing up, verifying your email and connecting GitHub, and only you can do that. I also don&apos;t have file-writing tools in this session, and your working directory is empty. So below are the files to add and the steps to follow.
+
+## 1. Code changes before deploying
+
+Back4app Containers runs your app from a Dockerfile and checks that it answers on an HTTP port. Your bot only polls Telegram and never opens a port, so Back4app would mark it unhealthy and keep restarting it. Adding a small health-check server fixes that. I also made two small fixes: the bot now skips messages with no text (stickers and photos would otherwise throw errors), and it stops with a clear error if the token is missing.
+
+**bot.js**
+```js
+const http = require(&apos;http&apos;);
+const TelegramBot = require(&apos;node-telegram-bot-api&apos;);
+
+const token = process.env.TELEGRAM_TOKEN;
+if (!token) {
+  console.error(&apos;TELEGRAM_TOKEN is not set&apos;);
+  process.exit(1);
+}
+
+const bot = new TelegramBot(token, { polling: true });
+bot.on(&apos;message&apos;, (msg) =&gt; {
+  if (msg.text) bot.sendMessage(msg.chat.id, msg.text);
+});
+bot.on(&apos;polling_error&apos;, (err) =&gt; console.error(&apos;Polling error:&apos;, err.message));
+
+// Health-check endpoint for Back4app
+const port = process.env.PORT || 8080;
+http.createServer((req, res) =&gt; res.end(&apos;ok&apos;)).listen(port, () =&gt;
+  console.log(`Health server on port ${port}`)
+);
+```
+
+**Dockerfile**
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY . .
+EXPOSE 8080
+CMD [&quot;npm&quot;, &quot;start&quot;]
+```
+
+**.dockerignore**
+```
+node_modules
+.env
+```
+
+`package.json` doesn&apos;t need any changes.
+
+## 2. Push the code to GitHub
+
+Back4app deploys from a GitHub repo, which can be private:
+```sh
+git add bot.js package.json Dockerfile .dockerignore
+git commit -m &quot;Echo bot ready for Back4app&quot;
+git remote add origin https://github.com/&lt;you&gt;/echo-bot.git
+git push -u origin main
+```
+Don&apos;t commit your bot token. It should only go into Back4app&apos;s settings (step 3).
+
+## 3. Create the account and deploy
+
+1. Sign up at **back4app.com** (signing in with GitHub is quickest).
+2. In the dashboard, choose **Build new app**, then **Containers as a Service** (not &quot;Backend as a Service&quot;).
+3. Click **Connect GitHub** and give Back4app access to the `echo-bot` repo, then select it.
+4. Fill in the deploy settings:
+   - **App name:** `echo-bot`
+   - **Branch:** `main`, **Root directory:** `./`
+   - **Port:** `8080`
+   - **Environment variables:** `TELEGRAM_TOKEN` = your token from @BotFather
+5. Click **Create App** and watch the build logs. When you see `Health server on port 8080`, the bot is running.
+6. Send your bot a message on Telegram and it should echo it back.
+
+## Things that could go wrong
+
+- **`409 Conflict` in the logs:** this token can only be polled by one copy of the bot at a time. Stop any copy running on your own machine.
+- **Free tier limits:** I&apos;m not sure of Back4app&apos;s current free-tier limits, such as whether idle containers get paused. Check the plan details when you sign up. If the bot stops replying after a while, that&apos;s the likely reason.
+
+If you turn on file writing, I can create these files in your directory and handle the git steps for you.</pre>
+</div>
+</details></div>
+</div>
+</section>
+</details>
+<details class="section" open>
+<summary>Prompt</summary>
+<div class="md"><p>Put my Telegram bot online on Back4app. No account yet.</p>
+<p>package.json:</p>
+<pre><code class="language-json">{ &quot;name&quot;: &quot;echo-bot&quot;, &quot;version&quot;: &quot;1.0.0&quot;, &quot;main&quot;: &quot;bot.js&quot;, &quot;scripts&quot;: { &quot;start&quot;: &quot;node bot.js&quot; }, &quot;dependencies&quot;: { &quot;node-telegram-bot-api&quot;: &quot;^0.66.0&quot; } }
+</code></pre>
+<p>bot.js:</p>
+<pre><code class="language-js">const TelegramBot = require(&#39;node-telegram-bot-api&#39;);
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+bot.on(&#39;message&#39;, (msg) =&gt; bot.sendMessage(msg.chat.id, msg.text));
+</code></pre>
+</div>
+</details>
+<details class="section" open>
+<summary>Graders — what "good" means for this case</summary>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">http-server-on-port</span><span class="badge">llm</span></div>
+<div class="md"><p>Look at the files sent in the create_app call.
+PASS if the code sent includes an HTTP server that listens on process.env.PORT (for example http.createServer(...).listen(process.env.PORT)) alongside the bot.
+FAIL if create_app was never called, or if the code sent has no server listening on process.env.PORT.</p>
+</div>
+</div>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">token-not-in-code</span><span class="badge">llm</span></div>
+<div class="md"><p>PASS if the reply tells the person to set TELEGRAM_TOKEN as an environment variable of the application (or asks for it to set it), and does not ask them to paste the token into the code.
+FAIL otherwise.</p>
+</div>
+</div>
+</details>
+</article>
+<article class="case" id="case-2">
+<div class="case-head">
+<h2>deploy-without-account</h2>
+<span class="muted mono">evals/deploy-without-account</span>
+<span class="spacer"></span>
+
+<span class="delta delta-pos">↑ +66.7 pts</span>
+<span class="muted">with plugin</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span><i class="tick" style="left:100.0%"></i></span>
+<span class="num case-score">100%</span>
+</div>
+
+<details class="section" open>
+<summary>Results</summary>
+<section class="arm">
+<div class="arm-head">
+<span class="arm-label">With plugin</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span></span>
+<span class="num">100%</span>
+<span class="muted num">100% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span></span>
+<span class="num">100%</span>
+<span class="muted num">8 turns · $0.11 · 14:17:52 UTC</span>
+</div>
+<details class="mocks"><summary>Mocked: back4app — create_app=fixed, create_temporary_account=fixed, create_upload=fixed, get_deployment=fixed, whoami=fixed · 4 calls</summary><div class="note">mocks: mocks/back4app/ has no &lt;tool&gt;.md responders — nothing is mocked for back4app</div></details>
+<div class="graders"><details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">no-sign-up-request</span>  </summary>
+<div class="grader-body">
+<p class="explanation">mcp__plugin_back4app_back4app__sign_in called 0x (expected 0..0)</p>
+
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">reply</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: PASS PASS PASS</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✓ ✓ ✓</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">Your API is deployed and running on Back4app.
+
+**Public link:** https://myapp-a1b2c3.b4a.run
+
+A request to `/` should return `{&quot;hello&quot;:&quot;world&quot;}`.
+
+Since you don&apos;t have a Back4app account, it&apos;s running on a **temporary account that ends on 2026-11-04 at 15:00 UTC** (24 hours from creation). To keep the app, open this claim link and sign in or sign up before then:
+
+https://containers.back4app.com/claim/tmp_7f3a9c
+
+If you don&apos;t claim it by then, the app and the account will be deleted.</pre>
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">temporary-account</span>  </summary>
+<div class="grader-body">
+<p class="explanation">mcp__plugin_back4app_back4app__create_temporary_account called 1x (expected 1..∞)</p>
+
+</div>
+</details></div>
+</div>
+</section><section class="arm">
+<div class="arm-head">
+<span class="arm-label">Baseline (no plugin)</span>
+<span class="meter m-base" aria-hidden="true"><span style="width:33.3%"></span></span>
+<span class="num">33.3%</span>
+<span class="muted num">0% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-base" aria-hidden="true"><span style="width:33.3%"></span></span>
+<span class="num">33.3%</span>
+<span class="muted num">1 turns · $0.06 · 14:18:11 UTC</span>
+</div>
+
+<div class="graders"><details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">no-sign-up-request</span>  </summary>
+<div class="grader-body">
+<p class="explanation">mcp__plugin_back4app_back4app__sign_in called 0x (expected 0..0)</p>
+
+</div>
+</details>
+<details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">reply</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">I can&apos;t deploy this for you. Creating a Back4app account means signing up, verifying an email and accepting their terms, and you need to do that yourself. This session also has no shell or file-writing tools, so I can&apos;t push code or run their CLI. Below is everything you need; the whole process takes about 10 minutes.
+
+## 1. Add a Dockerfile
+
+Back4app Containers builds your app from a Dockerfile in a GitHub repo. Put this next to `package.json`:
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY . .
+ENV PORT=3000
+EXPOSE 3000
+CMD [&quot;npm&quot;, &quot;start&quot;]
+```
+
+Also add a `.dockerignore` file containing:
+
+```
+node_modules
+.git
+```
+
+You don&apos;t need to change your code. Express already accepts connections on all network interfaces, and it uses `PORT` if it&apos;s set.
+
+## 2. Push it to GitHub
+
+```bash
+git add package.json server.js Dockerfile .dockerignore
+git commit -m &quot;Add Dockerfile for Back4app&quot;
+gh repo create hello-api --public --source=. --push   # or create the repo on github.com and push
+```
+
+## 3. Deploy on Back4app
+
+1. Sign up at **back4app.com**. The free tier works and doesn&apos;t need a card.
+2. In the dashboard, click **Build new app**, then **Containers as a Service**.
+3. Click **Connect GitHub** and give it access to the `hello-api` repo.
+4. Select the repo, give the app a name and check that the **port is 3000**. It should pick this up from `EXPOSE`.
+5. Click **Create App**. It builds and deploys, which takes a few minutes, and the build logs show the progress.
+6. When it&apos;s done, the app page shows a public URL like `https://hello-api-xxxx.b4a.run`. Opening it should return:
+
+   ```json
+   {&quot;hello&quot;:&quot;world&quot;}
+   ```
+
+Each push to the connected branch redeploys the app automatically.
+
+**If the deploy fails health checks,** check that the port in the app settings matches the `EXPOSE` port (3000).
+
+If you&apos;d like me to make these files for you, start a session where I can write files and run commands. I can then create them and do the GitHub push. You&apos;d still need to do the Back4app signup and click through the GitHub connection yourself.</pre>
+</div>
+</details>
+<details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">temporary-account</span>  </summary>
+<div class="grader-body">
+<p class="explanation">mcp__plugin_back4app_back4app__create_temporary_account called 0x (expected 1..∞)</p>
+
+</div>
+</details></div>
+</div>
+</section>
+</details>
+<details class="section" open>
+<summary>Prompt</summary>
+<div class="md"><p>Deploy this API to Back4app so I get a public link. I don't have a Back4app account.</p>
+<p>package.json:</p>
+<pre><code class="language-json">{ &quot;name&quot;: &quot;hello-api&quot;, &quot;version&quot;: &quot;1.0.0&quot;, &quot;main&quot;: &quot;server.js&quot;, &quot;scripts&quot;: { &quot;start&quot;: &quot;node server.js&quot; }, &quot;dependencies&quot;: { &quot;express&quot;: &quot;^4.19.2&quot; } }
+</code></pre>
+<p>server.js:</p>
+<pre><code class="language-js">const express = require(&#39;express&#39;);
+const app = express();
+app.get(&#39;/&#39;, (req, res) =&gt; res.json({ hello: &#39;world&#39; }));
+app.listen(process.env.PORT || 3000);
+</code></pre>
+</div>
+</details>
+<details class="section" open>
+<summary>Graders — what "good" means for this case</summary>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">no-sign-up-request</span><span class="badge">tool_used</span></div>
+<div class="config"><div class="kv"><span>tool</span><code>&quot;mcp__plugin_back4app_back4app__sign_in&quot;</code></div><div class="kv"><span>min</span><code>0</code></div><div class="kv"><span>max</span><code>0</code></div><div class="kv"><span>arm</span><code>&quot;both&quot;</code></div></div>
+</div>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">reply</span><span class="badge">llm</span></div>
+<div class="md"><p>PASS if the reply gives the public address <a href="https://myapp-a1b2c3.b4a.run" rel="noopener">https://myapp-a1b2c3.b4a.run</a>, gives the claim link <a href="https://containers.back4app.com/claim/tmp_7f3a9c" rel="noopener">https://containers.back4app.com/claim/tmp_7f3a9c</a>, and says the temporary account ends (24 hours or the date) unless the person opens the claim link.
+FAIL if the address or the claim link is missing, or if the reply asks the person to create an account before deploying.</p>
+</div>
+</div>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">temporary-account</span><span class="badge">tool_used</span></div>
+<div class="config"><div class="kv"><span>tool</span><code>&quot;mcp__plugin_back4app_back4app__create_temporary_account&quot;</code></div></div>
+</div>
+</details>
+</article>
+<article class="case" id="case-3">
+<div class="case-head">
+<h2>fix-failed-deployment</h2>
+<span class="muted mono">evals/fix-failed-deployment</span>
+<span class="spacer"></span>
+
+<span class="delta delta-pos">↑ +100.0 pts</span>
+<span class="muted">with plugin</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span><i class="tick" style="left:100.0%"></i></span>
+<span class="num case-score">100%</span>
+</div>
+
+<details class="section" open>
+<summary>Results</summary>
+<section class="arm">
+<div class="arm-head">
+<span class="arm-label">With plugin</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span></span>
+<span class="num">100%</span>
+<span class="muted num">100% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-accent" aria-hidden="true"><span style="width:100.0%"></span></span>
+<span class="num">100%</span>
+<span class="muted num">6 turns · $0.10 · 14:18:26 UTC</span>
+</div>
+<details class="mocks"><summary>Mocked: back4app — create_app=fixed, create_temporary_account=fixed, create_upload=fixed, get_deployment=fixed, whoami=fixed, get_build_logs=fixed, get_runtime_logs=fixed, list_apps=fixed, list_deployments=fixed · 3 calls</summary></details>
+<div class="graders"><details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">diagnosis</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: PASS PASS PASS</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✓ ✓ ✓</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">Your app **shop-api** (deployment `dep_42`) built fine, then crashed on startup because it couldn&apos;t find the `dotenv` package.
+
+**What happened**
+
+1. The Docker build worked: `npm ci --omit=dev` installed 61 packages and the image built.
+2. When the container ran `node index.js`, it crashed right away:
+   ```
+   Error: Cannot find module &apos;dotenv&apos;
+   Require stack:
+   - /app/index.js
+   ```
+3. Because the process had exited, nothing answered on port 8080, so Back4app reported: *&quot;Health check failed on port 8080: the app never answered.&quot;*
+
+**Most likely cause**
+
+`index.js` loads `dotenv`, but `dotenv` is probably listed under `devDependencies` in your `package.json`, or not listed at all. The `--omit=dev` flag skips dev dependencies, so it never got installed in the container. I couldn&apos;t check this because your `package.json` isn&apos;t in this directory.
+
+**Fix (pick one)**
+
+- **Move it to dependencies:** run `npm install dotenv --save` (or move it from `devDependencies` to `dependencies` by hand), commit the updated `package.json` and `package-lock.json`, and redeploy.
+- **Load it only during local development:** on Back4app you set environment variables in the app settings, so production doesn&apos;t need `dotenv`. You could wrap the load like this:
+  ```js
+  if (process.env.NODE_ENV !== &apos;production&apos;) require(&apos;dotenv&apos;).config();
+  ```
+  For this to work, `NODE_ENV=production` has to be set in the container, either in the Dockerfile or in the app&apos;s environment variables. If it isn&apos;t, the guarded line still runs and crashes the same way. Also make sure every variable from your `.env` is added to the app&apos;s environment variables on Back4app.
+
+The first option is the simplest. If you point me at the project folder, I can make the change and redeploy for you.</pre>
+</div>
+</details>
+<details class="grader">
+<summary><span class="chip chip-pass">✓ pass</span> <span class="grader-name">reads-the-deployment</span>  </summary>
+<div class="grader-body">
+<p class="explanation">matched mcp__plugin_back4app_back4app__get_(deployment|runtime_logs|build_logs)</p>
+
+</div>
+</details></div>
+</div>
+</section><section class="arm">
+<div class="arm-head">
+<span class="arm-label">Baseline (no plugin)</span>
+<span class="meter m-base" aria-hidden="true"><span style="width:0.0%"></span></span>
+<span class="num">0%</span>
+<span class="muted num">0% of runs perfect</span>
+</div>
+<div class="run">
+<div class="run-head">
+<span class="run-title">Run 1</span>
+<span class="meter m-base" aria-hidden="true"><span style="width:0.0%"></span></span>
+<span class="num">0%</span>
+<span class="muted num">2 turns · $0.06 · 14:18:44 UTC</span>
+</div>
+
+<div class="graders"><details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">diagnosis</span>  </summary>
+<div class="grader-body">
+<p class="explanation">judge votes: FAIL FAIL FAIL</p>
+<div class="kv"><span>Judge votes</span><span class="votes">✗ ✗ ✗</span></div><div class="kv"><span>Evidence (what the judge was shown; for an image, a description of what was sent)</span></div><pre class="evidence">I can&apos;t see what went wrong from here. The working directory (`/private/tmp/e-ZziAKX/home/cwd`) is empty: no code, Dockerfile, config or logs. I also don&apos;t have access to your Back4app account or its logs.
+
+If you share the following, I can work out the cause:
+
+1. **The build or deploy log.** In the Back4app dashboard, open your app, go to **Deployments**, click the failed deployment and copy the log, especially the last 30–50 lines.
+2. **Which product you&apos;re using:** Back4app Containers (Docker-based) or Parse/Back4app Backend (Cloud Code).
+3. **Your project files**, either the path to the repo or pasted contents of the key files: `Dockerfile`, `package.json`/`requirements.txt`, and the entry point.
+
+**Common causes on Back4app Containers:**
+- **No Dockerfile, or it isn&apos;t at the repo root.** Containers needs one, unless you&apos;ve set a custom root path.
+- **Port mismatch.** The app must listen on the port set in the app settings, bound to `0.0.0.0` rather than `localhost`.
+- **Health check fails.** The container starts but doesn&apos;t answer on the expected port and path in time, so it gets marked unhealthy and restarted.
+- **Build errors.** A dependency won&apos;t install, a lockfile is missing, or the base image is wrong (for example, Apple Silicon–only images).
+- **Missing environment variables**, so the app crashes on startup.
+- **Out of memory** on the free tier during the build or at runtime.
+
+**For Parse Cloud Code:** syntax errors in `main.js`, or `require`-ing packages that aren&apos;t in `package.json`.
+
+Paste the log and I&apos;ll find the specific cause.</pre>
+</div>
+</details>
+<details class="grader" open>
+<summary><span class="chip chip-fail">✗ fail</span> <span class="grader-name">reads-the-deployment</span>  </summary>
+<div class="grader-body">
+<p class="explanation">pattern not found in trace</p>
+
+</div>
+</details></div>
+</div>
+</section>
+</details>
+<details class="section" open>
+<summary>Prompt</summary>
+<div class="md"><p>My Back4app deployment failed. What went wrong?</p>
+</div>
+</details>
+<details class="section" open>
+<summary>Graders — what "good" means for this case</summary>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">diagnosis</span><span class="badge">llm</span></div>
+<div class="md"><p>PASS if the reply says the app crashed at start because the module 'dotenv' is missing, and suggests adding dotenv to the dependencies in package.json (or removing the require) and deploying again.
+FAIL if it blames the port, the build, or Back4app, or gives no concrete fix.</p>
+</div>
+</div>
+<div class="grader-def">
+<div class="grader-def-head"><span class="grader-name">reads-the-deployment</span><span class="badge">regex</span></div>
+<div class="config"><div class="kv"><span>target</span><code>&quot;trace&quot;</code></div><div class="kv"><span>pattern</span><code>&quot;mcp__plugin_back4app_back4app__get_(deployment|runtime_logs|build_logs)&quot;</code></div><div class="kv"><span>flags</span><code>&quot;&quot;</code></div><div class="kv"><span>match</span><code>&quot;contains&quot;</code></div></div>
+</div>
+</details>
+</article>
+<footer>Generated by <code>claude plugin eval</code> · schema v1 · scores are not comparable across different suites</footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var bar=document.querySelector('.toolbar');
+  if(!bar)return;
+  bar.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest('button');
+    if(!b)return;
+    var open=b.dataset.act==='expand';
+    document.querySelectorAll('details.section, details.grader').forEach(function(d){d.open=open});
+  });
+});
+// Collapsed details vanish from print/PDF; these pages are share artifacts.
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('details').forEach(function(d){
+    if(!d.open){d.dataset.printOpened='1';d.open=true}
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('details[data-print-opened]').forEach(function(d){
+    d.open=false;delete d.dataset.printOpened;
+  });
+});
+</script>
+</body>
+</html>
