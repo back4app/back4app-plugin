@@ -1,5 +1,5 @@
 ---
-description: A person with no Back4app account asks to deploy a small Express API. No terminal, only the MCP server.
+description: A person with no Back4app account, connected on a temporary account chosen with "Continue without an account", asks to deploy a small Express API. No terminal, only the MCP server.
 max_turns: 20
 allowed_tools: [Skill]
 tags: [deploy]
