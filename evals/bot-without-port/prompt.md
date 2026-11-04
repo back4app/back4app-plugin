@@ -5,7 +5,7 @@ allowed_tools: [Skill]
 tags: [deploy, port]
 ---
 
-Put my Telegram bot online on Back4app. No account yet. My bot token is 123456:TEST-TOKEN-FOR-EVAL.
+Put my Telegram bot online on Back4app. No account yet. The bot token goes in the TELEGRAM_TOKEN environment variable.
 
 package.json:
 ```json
