@@ -15,25 +15,14 @@ Back4app Web Deployment builds a folder of code, runs it in a container and give
 
 ## How to deploy
 
-Pick the first path that fits where you run.
-
-1. **The Back4app Web Deployment MCP server is connected.** Use its tools. With no account on the connection, it can make a temporary account: the person keeps the application with the claim link, or signs in to their Back4app account.
-2. **You have a terminal with network access, and no MCP server.** From the folder:
-
-   ```bash
-   npx -y @back4app/cli deploy --temporary --json
-   ```
-
-   It prints one line of JSON with the application's `url`, the `claimUrl` and when the account ends. Run it again from the same folder to deploy new code to the same application.
-
-   A sandbox with no network access can't reach Back4app: use the MCP server there.
-3. **Neither.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
+- **The Back4app Web Deployment MCP server is connected.** Use its tools. With no account on the connection, it can make a temporary account: the person keeps the application with the claim link, or signs in to their Back4app account.
+- **It is not connected.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy.
 
 ## Before deploying
 
 - The application must answer HTTP on the port in the `PORT` environment variable, or its health check fails. A bot or a worker with no web server needs a small one on `PORT`, for example one that answers `200` on `/`.
 - On a temporary account the build uses a buildpack and does not use a Dockerfile, so the code must run without one. Once claimed, the application builds from its Dockerfile.
-- Leave out `.env` files and secrets. Set what the application needs as its environment variables.
+- Leave out `.env` files. Ask the person for the secrets the application needs and set them as its environment variables.
 - Leave out dependencies and build output (`node_modules`, `.venv`, `dist`): the build installs them.
 
 ## After deploying
