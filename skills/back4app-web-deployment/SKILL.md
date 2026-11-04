@@ -15,16 +15,14 @@ Back4app Web Deployment builds a folder of code, runs it in a container and give
 
 ## How to deploy
 
-Pick the first path that fits where you run.
-
-1. **The Back4app Web Deployment MCP server is connected.** Use its tools. When it connects, the client opens a Back4app page where the person signs in, or chooses **Continue without an account** for a temporary account. `whoami` says which account it is.
-2. **Not connected.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy. They do not need a Back4app account: they can continue without one when it connects.
+- **The Back4app Web Deployment MCP server is connected.** Use its tools. When it connects, the client opens a Back4app page where the person signs in, or chooses **Continue without an account** for a temporary account. `whoami` says which account it is.
+- **It is not connected.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy. They do not need a Back4app account: they can continue without one when it connects.
 
 ## Before deploying
 
 - The application must answer HTTP on the port in the `PORT` environment variable, or its health check fails. A bot or a worker with no web server needs a small one on `PORT`, for example one that answers `200` on `/`.
 - On a temporary account the build uses a buildpack and does not use a Dockerfile, so the code must run without one. Once claimed, the application builds from its Dockerfile.
-- Leave out `.env` files and secrets. Set what the application needs as its environment variables.
+- Leave out `.env` files. Ask the person for the secrets the application needs and set them as its environment variables.
 - Leave out dependencies and build output (`node_modules`, `.venv`, `dist`): the build installs them.
 
 ## After deploying
