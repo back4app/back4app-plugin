@@ -3,7 +3,7 @@
     {
       "name": "whoami",
       "title": "Who is connected",
-      "description": "The account this connection works with: a Back4App account, a temporary account (with its deadline and claim link), or none yet. Tells which account the other tools act on.",
+      "description": "The account this connection works with: the person's Back4App account, or a temporary account (with its deadline, and its claim link once it has an app). Tells which account the other tools act on.",
       "inputSchema": {
         "type": "object",
         "properties": {}
