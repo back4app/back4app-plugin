@@ -12,7 +12,7 @@ Deploy anything that runs in a container, from web apps and websites to APIs and
 
 - Your agent sends the folder to Back4app, which builds it with its Dockerfile, or detects the language when there is none, runs it in a container and gives it a public HTTPS address.
 - No account is needed to start: when your agent connects, Back4app opens in your browser. Choose Continue without an account for a temporary account that lasts 24 hours, or sign in to your Back4app account.
-- On a temporary account, the agent gives you a claim link. Open it and sign in, or sign up for free, to keep the application.
+- A temporary account holds one web app. Its claim link comes with the app: open it and sign in, or sign up for free, to keep the application.
 - Your agent follows the build, reads build and runtime logs, deploys new versions, sets environment variables and rolls back.
 - Changes to a live application, like new environment variables or a rollback, are shown to you as a summary first and run only after you agree.
 - The application must answer HTTP on the port in the `PORT` environment variable.
