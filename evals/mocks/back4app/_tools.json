@@ -710,9 +710,9 @@
       ]
     },
     {
-      "name": "rollback",
-      "title": "Ask to roll an app back",
-      "description": "Asks to put an app back on its previous version, when the new one misbehaves and the one before worked. Nothing changes on this call: it answers a summary of the swap and a confirmationId. Show the summary to the person and, if they agree, call confirm_action. Environment variables and the database stay as they are.",
+      "name": "rollback_web_app",
+      "title": "Ask to roll a web app back",
+      "description": "Asks to put a web app back on its previous version, when the new one misbehaves and the one before worked. Nothing changes on this call: it answers a summary of the swap and a confirmationId. Show the summary to the person and, if they agree, call confirm_action. Environment variables and the database stay as they are.",
       "inputSchema": {
         "type": "object",
         "properties": {

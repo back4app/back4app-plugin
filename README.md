@@ -34,7 +34,7 @@ The plugin connects to a remote MCP server. To use it on its own, in any MCP cli
 
 - URL: `https://mcp.back4app.com/mcp`
 - Transport: Streamable HTTP
-- Authentication: none to start. The server makes a temporary account when you ask to deploy. To use your Back4app account, ask the agent to sign in (OAuth 2.1).
+- Authentication: OAuth 2.1. When the client connects, a Back4app page opens: sign in to your account, or choose Continue without an account for a temporary one (24 hours, one web app, kept with a claim link).
 
 ## What's inside
 
