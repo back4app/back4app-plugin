@@ -25,6 +25,7 @@ jobs:
               ".kimi-plugin/plugin.json",
               ".antigravity-plugin/plugin.json",
               "gemini-extension.json",
+              "package.json",
           ]
           versions = {f: json.loads(pathlib.Path(f).read_text())["version"] for f in manifests}
           if len(set(versions.values())) != 1:

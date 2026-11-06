@@ -19,7 +19,7 @@ Deploy anything that runs in a container, from web apps and websites to APIs and
 
 ## Supported tools
 
-Claude Code, Claude (claude.ai, desktop, Cowork), Cursor, Codex, GitHub Copilot CLI, VS Code, Gemini CLI, Grok Build, Kimi Code and Antigravity.
+Claude Code, Claude (claude.ai, desktop, Cowork), Cursor, Codex, GitHub Copilot CLI, VS Code, Gemini CLI, Grok Build, Kimi Code, Antigravity and DeepSeek Harness.
 
 ## Install
 
@@ -27,7 +27,7 @@ Claude Code, Claude (claude.ai, desktop, Cowork), Cursor, Codex, GitHub Copilot 
 npx plugins add back4app/back4app-plugin
 ```
 
-That's it: the plugin installs the Back4app MCP server and the Web Deployment skill. For Gemini CLI, run `gemini extensions install https://github.com/back4app/back4app-plugin`.
+That's it: the plugin installs the Back4app MCP server and the Web Deployment skill. For Gemini CLI, run `gemini extensions install https://github.com/back4app/back4app-plugin`. For DeepSeek Harness, run `dsh plugin --profile tui add github:back4app/back4app-plugin`: it installs the skill, which deploys with the Back4app CLI.
 
 ## Back4app MCP server
 
