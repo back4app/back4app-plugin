@@ -16,7 +16,8 @@ Back4app Web Deployment builds a folder of code, runs it in a container and give
 ## How to deploy
 
 - **The Back4app Web Deployment MCP server is connected.** Use its tools. The connection has the account the person chose when connecting: their Back4app account, or a temporary one. `whoami` says which. If the connection is refused, ask the person to connect the MCP server again.
-- **It is not connected.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy. They do not need a Back4app account: they can continue without one when it connects.
+- **No MCP server, with a terminal.** `npx @back4app/cli@0.3.2 deploy --temporary`, run in the folder, deploys it on a temporary account. The first run prints a link for the person to open; the same command run after that prints the web app's address and its claim link. Running it again later deploys the folder's new version to the same web app.
+- **No MCP server and no terminal.** Tell the person to connect the MCP server at `https://mcp.back4app.com/mcp`, then deploy. They do not need a Back4app account: they can continue without one when it connects.
 
 ## Before deploying
 
