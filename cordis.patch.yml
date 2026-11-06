@@ -1,0 +1,4 @@
+# DeepSeek Harness bundle: registers the back4app-web-deployment skill.
+- insert:
+    - id: back4app
+      name: back4app
